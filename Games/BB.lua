@@ -405,11 +405,12 @@ local Window = Parvus.Utilities.UI:Window({
 
                     task.wait(0.1)
                     firesignal(LocalPlayer.PlayerGui.MenuGui.ClaimedFrame.CloseButton.MouseButton1Click)
-                    firesignal(LocalPlayer.PlayerGui.MenuGui.PurchasedFrame.CloseButton.MouseButton1Click)
+                    pcall(firesignal(LocalPlayer.PlayerGui.MenuGui.PurchasedFrame.CloseButton.MouseButton1Click) end)
                     Parvus.Utilities.UI:Push({Title = "Parvus Hub", Description = "All available codes are claimed!", Duration = 5})
                 else
                     Parvus.Utilities.UI:Push({Title = "Parvus Hub", Description = "Failed to get the codes:\n" .. Error, Duration = 5})
                 end
+                      
             end})
         end
         local ACSection = MiscTab:Section({Name = "Arms Customization", Side = "Right"}) do
