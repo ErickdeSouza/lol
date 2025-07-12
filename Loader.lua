@@ -27,7 +27,8 @@ local Branch, NotificationTime, IsLocal = ...
 local QueueOnTeleport = queue_on_teleport
 
 local function GetFile(File)
-    game:HttpGet(("%s%s"):format(local Source = "https://raw.githubusercontent.com/ErickdeSouza/lol/refs/heads/" .. Branch .. "/", File))
+    return IsLocal and readfile("Parvus/" .. File)
+    or game:HttpGet(("%s%s"):format(Parvus.Source, File))
 end
 
 local function LoadScript(Script)
@@ -45,7 +46,7 @@ local function GetGameInfo()
 end
 
 getgenv().Parvus = {
-    Source = "https://raw.githubusercontent.com/ErickdeSouza/lol/refs/heads/" .. Branch .. "/",
+    Source = "https://raw.githubusercontent.com/ErickdeSouza/lol/" .. Branch .. "/",
 
     Games = {
         ["Universal" ] = { Name = "Universal",                  Script = "Universal"  },
