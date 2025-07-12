@@ -386,7 +386,7 @@ local Window = Parvus.Utilities.UI:Window({
             }})
         end
         local MiscSection = MiscTab:Section({Name = "Other", Side = "Left"}) do
-            MiscSection:Button({Name = "Redeem Codes", Callback = pcall(function()
+            MiscSection:Button({Name = "Redeem Codes", Callback = function()
                 local Codes = ""
                 local Success, Message = pcall(function()
                     Codes = game:HttpGet("https://roblox-bad-business.fandom.com/wiki/Codes")
@@ -412,7 +412,7 @@ local Window = Parvus.Utilities.UI:Window({
                 end
 
             
-            end)})
+            end})
         end
         local ACSection = MiscTab:Section({Name = "Arms Customization", Side = "Right"}) do
             ACSection:Toggle({Name = "Enabled", Flag = "BB/AC/Enabled", Value = false})
