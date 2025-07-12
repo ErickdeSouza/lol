@@ -1260,24 +1260,20 @@ function DrawingLibrary.AddESP(Self, Target, Mode, Flag, Flags)
 end
 
 function DrawingLibrary.RemoveESP(Self, Target)
-    pcall(function()
-        local ESP = Self.ESP[Target]
-        if not ESP then return end
-    
-        --ESP.Connection:Disconnect()
-        ClearDrawing(ESP.Drawing)
-        Self.ESP[Target] = nil
-    end)
+    local ESP = Self.ESP[Target]
+    if not ESP then return end
+
+    --ESP.Connection:Disconnect()
+    ClearDrawing(ESP.Drawing)
+    Self.ESP[Target] = nil
 end
 
 function DrawingLibrary.RemoveObject(Self, Target)
-    pcall(function()
-        local ESP = Self.ObjectESP[Target]
-        if not ESP then return end
-    
-        ESP.Name:Destroy()
-        Self.ObjectESP[Target] = nil
-    end)
+    local ESP = Self.ObjectESP[Target]
+    if not ESP then return end
+
+    ESP.Name:Destroy()
+    Self.ObjectESP[Target] = nil
 end
 
 function DrawingLibrary.SetupCursor(Window)
@@ -1387,39 +1383,37 @@ Workspace:GetPropertyChangedSignal("CurrentCamera"):Connect(function()
 end)
 
 DrawingLibrary.Connection = RunService.RenderStepped:Connect(function()
-    pcall(function()
-        debug.profilebegin("PARVUS_DRAWING")
-        for Target, ESP in pairs(DrawingLibrary.ESP) do
-            DrawingLibrary.Update(ESP, Target)
+    debug.profilebegin("PARVUS_DRAWING")
+    for Target, ESP in pairs(DrawingLibrary.ESP) do
+        DrawingLibrary.Update(ESP, Target)
+    end
+    for Object, ESP in pairs(DrawingLibrary.ObjectESP) do
+        --DrawingLibrary.UpdateObject(ESP, Object)
+        if not GetFlag(ESP.Flags, ESP.GlobalFlag, "/Enabled")
+        or not GetFlag(ESP.Flags, ESP.Flag, "/Enabled") then
+            ESP.Name.Visible = false
+            continue
         end
-        for Object, ESP in pairs(DrawingLibrary.ObjectESP) do
-            --DrawingLibrary.UpdateObject(ESP, Object)
-            if not GetFlag(ESP.Flags, ESP.GlobalFlag, "/Enabled")
-            or not GetFlag(ESP.Flags, ESP.Flag, "/Enabled") then
-                ESP.Name.Visible = false
-                continue
-            end
-    
-            ESP.Target.Position = ESP.IsBasePart and ESP.Target.RootPart.Position or ESP.Target.Position
-            ESP.Target.ScreenPosition, ESP.Target.OnScreen = WorldToScreen(ESP.Target.Position)
-    
-            ESP.Target.Distance = GetDistance(ESP.Target.Position)
-            ESP.Target.InTheRange = IsWithinReach(GetFlag(ESP.Flags, ESP.GlobalFlag, "/DistanceCheck"),
-            GetFlag(ESP.Flags, ESP.GlobalFlag, "/Distance"), ESP.Target.Distance)
-    
-            ESP.Name.Visible = (ESP.Target.OnScreen and ESP.Target.InTheRange) or false
-    
-            if ESP.Name.Visible then
-                local Color = GetFlag(ESP.Flags, ESP.Flag, "/Color")
-                ESP.Name.Transparency = 1 - Color[4]
-                ESP.Name.Color = Color[6]
-    
-                ESP.Name.Position = ESP.Target.ScreenPosition
-                ESP.Name.Text = string.format("%s\n%i studs", ESP.Target.Name, ESP.Target.Distance)
-            end
+
+        ESP.Target.Position = ESP.IsBasePart and ESP.Target.RootPart.Position or ESP.Target.Position
+        ESP.Target.ScreenPosition, ESP.Target.OnScreen = WorldToScreen(ESP.Target.Position)
+
+        ESP.Target.Distance = GetDistance(ESP.Target.Position)
+        ESP.Target.InTheRange = IsWithinReach(GetFlag(ESP.Flags, ESP.GlobalFlag, "/DistanceCheck"),
+        GetFlag(ESP.Flags, ESP.GlobalFlag, "/Distance"), ESP.Target.Distance)
+
+        ESP.Name.Visible = (ESP.Target.OnScreen and ESP.Target.InTheRange) or false
+
+        if ESP.Name.Visible then
+            local Color = GetFlag(ESP.Flags, ESP.Flag, "/Color")
+            ESP.Name.Transparency = 1 - Color[4]
+            ESP.Name.Color = Color[6]
+
+            ESP.Name.Position = ESP.Target.ScreenPosition
+            ESP.Name.Text = string.format("%s\n%i studs", ESP.Target.Name, ESP.Target.Distance)
         end
-        debug.profileend()
-    end)
+    end
+    debug.profileend()
 end)
 
 --[[DrawingLibrary.Connection = RunService.RenderStepped:Connect(function()
