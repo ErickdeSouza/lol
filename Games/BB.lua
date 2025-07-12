@@ -404,7 +404,7 @@ local Window = Parvus.Utilities.UI:Window({
                     end
 
                     task.wait(0.1)
-                    firesignal(LocalPlayer.PlayerGui.MenuGui.ClaimedFrame.CloseButton.MouseButton1Click)
+                    pcall(function() firesignal(LocalPlayer.PlayerGui.MenuGui.ClaimedFrame.CloseButton.MouseButton1Click) end)
                     pcall(function() firesignal(LocalPlayer.PlayerGui.MenuGui.PurchasedFrame.CloseButton.MouseButton1Click) end)
                     Parvus.Utilities.UI:Push({Title = "Parvus Hub", Description = "All available codes are claimed!", Duration = 5})
                 else
