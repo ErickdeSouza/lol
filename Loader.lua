@@ -45,7 +45,7 @@ local function GetGameInfo()
     return Parvus.Games.Universal
 end
 
-getgenv().Parvus = {
+Parvus = {
     Source = "https://raw.githubusercontent.com/ErickdeSouza/lol/" .. Branch .. "/",
 
     Games = {
