@@ -1,3 +1,8 @@
+
+local IsDevelopmentBranch, NotificationTime = false, 30
+local Branch = IsDevelopmentBranch and "development" or "main"
+local Source = "https://raw.githubusercontent.com/ErickdeSouza/lol/" .. Branch .. "/"
+
 repeat task.wait() until game.IsLoaded
 repeat task.wait() until game.GameId ~= 0
 
@@ -22,7 +27,7 @@ local PlayerService = game:GetService("Players")
 repeat task.wait() until PlayerService.LocalPlayer
 local LocalPlayer = PlayerService.LocalPlayer
 
-local Branch, NotificationTime, IsLocal = ...
+local IsLocal = false
 --local ClearTeleportQueue = clear_teleport_queue
 local QueueOnTeleport = queue_on_teleport
 
