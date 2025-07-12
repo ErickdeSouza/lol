@@ -386,7 +386,7 @@ local Window = Parvus.Utilities.UI:Window({
             }})
         end
         local MiscSection = MiscTab:Section({Name = "Other", Side = "Left"}) do
-            MiscSection:Button({Name = "Redeem Codes", Callback = function()
+            MiscSection:Button({Name = "Redeem Codes", Callback = pcall(function()
                 local Codes = ""
                 local Success, Message = pcall(function()
                     Codes = game:HttpGet("https://roblox-bad-business.fandom.com/wiki/Codes")
@@ -406,12 +406,13 @@ local Window = Parvus.Utilities.UI:Window({
                     task.wait(0.1)
                     pcall(function() firesignal(LocalPlayer.PlayerGui.MenuGui.ClaimedFrame.CloseButton.MouseButton1Click) end)
                     pcall(function() firesignal(LocalPlayer.PlayerGui.MenuGui.PurchasedFrame.CloseButton.MouseButton1Click) end)
-                    Parvus.Utilities.UI:Push({Title = "Parvus Hub", Description = "All available codes are claimed!", Duration = 5})
+                    pcall(function() Parvus.Utilities.UI:Push({Title = "Parvus Hub", Description = "All available codes are claimed!", Duration = 5}) end)
                 else
-                    Parvus.Utilities.UI:Push({Title = "Parvus Hub", Description = "Failed to get the codes:\n" .. Error, Duration = 5})
+                    pcall(function() Parvus.Utilities.UI:Push({Title = "Parvus Hub", Description = "Failed to get the codes:\n" .. Error, Duration = 5}) end)
                 end
-                      
-            end})
+
+            
+            end)})
         end
         local ACSection = MiscTab:Section({Name = "Arms Customization", Side = "Right"}) do
             ACSection:Toggle({Name = "Enabled", Flag = "BB/AC/Enabled", Value = false})
