@@ -61,6 +61,10 @@ getgenv().Parvus = {
     }
 }
 
+Parvus.Game = GetGameInfo()
+LoadScript(Parvus.Game.Script)
+Parvus.Loaded = true
+
 Parvus.Utilities = LoadScript("Utilities/Main")
 Parvus.Utilities.UI = LoadScript("Utilities/UI")
 Parvus.Utilities.Physics = LoadScript("Utilities/Physics")
@@ -79,9 +83,7 @@ LocalPlayer.OnTeleport:Connect(function(State)
     end
 end)
 
-Parvus.Game = GetGameInfo()
-LoadScript(Parvus.Game.Script)
-Parvus.Loaded = true
+
 
 Parvus.Utilities.UI:Push({
     Title = "Parvus Hub",
