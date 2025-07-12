@@ -26,7 +26,7 @@ local Branch, NotificationTime, IsLocal = ...
 local QueueOnTeleport = queue_on_teleport
 
 local function GetFile(File)
-    return IsLocal and readfile("Parvus/" .. File)
+    return IsLocal and readfile("lol/" .. File)
     or game:HttpGet(("%s%s"):format(Parvus.Source, File))
 end
 
@@ -82,7 +82,7 @@ LocalPlayer.OnTeleport:Connect(function(State)
 end)
 
 Parvus.Game = GetGameInfo()
-LoadScript("Games/BB")
+LoadScript(Parvus.Game.Script)
 Parvus.Loaded = true
 
 Parvus.Utilities.UI:Push({
