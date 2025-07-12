@@ -1,14 +1,15 @@
 repeat task.wait() until game.IsLoaded
 repeat task.wait() until game.GameId ~= 0
 
-if Parvus and Parvus.Loaded then
-    Parvus.Utilities.UI:Push({
-        Title = "Parvus Hub",
-        Description = "Script already running!",
-        Duration = 5
-    }) return
-end
-
+pcall(function()
+    if Parvus and Parvus.Loaded then
+        Parvus.Utilities.UI:Push({
+            Title = "Parvus Hub",
+            Description = "Script already running!",
+            Duration = 5
+        }) return
+    end
+end)
 --[[if Parvus and (Parvus.Game and not Parvus.Loaded) then
     Parvus.Utilities.UI:Push({
         Title = "Parvus Hub",
