@@ -70,7 +70,7 @@ Parvus = {
 
 
 Parvus.Utilities = LoadScript("Utilities/Main")
-Parvus.Utilities.UI = loadstring(game:HttpGet("https://raw.githubusercontent.com/ErickdeSouza/lol/refs/heads/main/Utilities/UI.lua")()
+Parvus.Utilities.UI = loadstring(game:HttpGet("https://raw.githubusercontent.com/ErickdeSouza/lol/refs/heads/main/Utilities/UI.lua", "UI"))()
 Parvus.Utilities.Physics = LoadScript("Utilities/Physics")
 Parvus.Utilities.Drawing = LoadScript("Utilities/Drawing")
 
