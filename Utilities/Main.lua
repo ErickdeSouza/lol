@@ -26,7 +26,7 @@ do -- Thanks to Kiriot22
         Message = Error
     end)
 
-    OldPluginManager = hookfunction(getrenv().PluginManager or PluginManager, function()
+    OldPluginManager = hookfunction(getrenv().PluginManager, function()
         return error(Message)
     end)
 end
