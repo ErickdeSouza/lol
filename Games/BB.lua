@@ -1,8 +1,5 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local UserInputService = game:GetService("UserInputService")
-local UserInputService = game:GetService("UserInputService")
-local RunService = game:GetService("RunService")
-local VirtualInputManager = game:GetService("VirtualInputManager")
 --local RunService = game:GetService("RunService")
 local PlayerService = game:GetService("Players")
 local Workspace = game:GetService("Workspace")
@@ -182,8 +179,6 @@ local Window = Parvus.Utilities.UI:Window({
             AimbotSection:Slider({Name = "Sensitivity", Flag = "Aimbot/Sensitivity", Min = 0, Max = 100, Value = 20, Unit = "%"})
             AimbotSection:Slider({Name = "Field Of View", Flag = "Aimbot/FOV/Radius", Min = 0, Max = 500, Value = 100, Unit = "r"})
             AimbotSection:Slider({Name = "Distance Limit", Flag = "Aimbot/DistanceLimit", Min = 25, Max = 1000, Value = 250, Unit = "studs"})
-
-            AimbotSection:Toggle({Name = "Always Sprint", Flag = "Aimbot/Sprint", Value = false})
 
             local PriorityList, BodyPartsList = {{Name = "Closest", Mode = "Button", Value = true}}, {}
             for Index, Value in pairs(KnownBodyParts) do
@@ -1050,26 +1045,6 @@ local function GetClosest(Enabled, VisibilityCheck, DistanceCheck,
 
     return Closest
 end
-local function Sprintin(aimna, sprina)
-    if not aimna and not sprina then return end
-    local char, Body = GetPlayerBody(LocalPlayer)
-    if not char or not Body then return end
-        
-    local sprint = char.State.Sprinting.Server.Value
-    local slide = char.State.Sliding.Server.Value
-    local aiming = char.State.Aiming.Server.Value
-    
-    if not sprint and not slide and not aiming then
-        VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.LeftShift, false, nil)
-    end
-    
-    
-    UserInputService.InputEnded:Connect(function(input, gp)
-        if input.KeyCode == Enum.KeyCode.W then
-            VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.LeftShift, false, nil)
-        end
-    end)
-end
 local function AimAt(Hitbox, Sensitivity)
     if not Hitbox then return end
     local MouseLocation = UserInputService:GetMouseLocation()
@@ -1287,11 +1262,6 @@ Parvus.Utilities.NewThreadLoop(0, function()
         Window.Flags["Aimbot/Prediction"]
     ), Window.Flags["Aimbot/Sensitivity"] / 100)
 end)
-
-Parvus.Utilities.NewThreadLoop(0, function()
-     Sprintin(Window.Flags["Aimbot/Enabled"], Window.Flags["Aimbot/Sprint"])
-end)
-
 Parvus.Utilities.NewThreadLoop(0, function()
     SilentAim = GetClosest(
         Window.Flags["SilentAim/Enabled"] and not
