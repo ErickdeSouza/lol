@@ -2,42 +2,7 @@
 local IsDevelopmentBranch, NotificationTime = false, 30
 local Branch = IsDevelopmentBranch and "development" or "main"
 local Source = "https://raw.githubusercontent.com/ErickdeSouza/lol/" .. Branch .. "/"
-local UserInputService = game:GetService("UserInputService")
-local RunService = game:GetService("RunService")
-local VirtualInputManager = game:GetService("VirtualInputManager")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local PlayerService = game:GetService("Players")
-local LocalPlayer = PlayerService.LocalPlayer
-local Tortoiseshell = getupvalue(require(ReplicatedStorage.TS), 1)
-local Characters = getupvalue(Tortoiseshell.Characters.GetCharacter, 1)
 
-
-local function GetPlayerBody(Player)
-    local Character = Characters[Player]
-
-    if not Character then return end
-    if Character.Parent == nil then return end
-    return Character, Character:FindFirstChild("Body")
-end
-
-RunService.RenderStepped:Connect(function()
-    local char, Body = GetPlayerBody(LocalPlayer)
-    if not char or not Body then return end
-    
-    local sprint = char.State.Sprinting.Server.Value
-    local slide = char.State.Sliding.Server.Value
-    local aiming = char.State.Aiming.Server.Value
-
-    if not sprint and not slide and not aiming then
-        VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.LeftShift, false, nil)
-    end
-end)
-
-UserInputService.InputEnded:Connect(function(input, gp)
-	if input.KeyCode == Enum.KeyCode.W then
-		VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.LeftShift, false, nil)
-	end
-end)
 
 repeat task.wait() until game.IsLoaded
 repeat task.wait() until game.GameId ~= 0
