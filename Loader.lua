@@ -26,7 +26,7 @@ RunService.RenderStepped:Connect(function()
     
     local sprint = char.State.Sprinting.Server.Value
     local slide = char.State.Sliding.Server.Value
-    local slide = char.State.Aiming.Server.Value
+    local aiming = char.State.Aiming.Server.Value
 
     if not sprint and not slide and not aiming then
         VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.LeftShift, false, nil)
