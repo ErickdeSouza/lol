@@ -1051,25 +1051,24 @@ local function GetClosest(Enabled, VisibilityCheck, DistanceCheck,
     return Closest
 end
 local function Sprintin(aimna, sprina)
-    if aimna and sprina then
-        local char, Body = GetPlayerBody(LocalPlayer)
-        if not char or not Body then return end
-            
-        local sprint = char.State.Sprinting.Server.Value
-        local slide = char.State.Sliding.Server.Value
-        local aiming = char.State.Aiming.Server.Value
+    if not aimna and not sprina then return end
+    local char, Body = GetPlayerBody(LocalPlayer)
+    if not char or not Body then return end
         
-        if not sprint and not slide and not aiming then
-            VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.LeftShift, false, nil)
-        end
-        
-        
-        UserInputService.InputEnded:Connect(function(input, gp)
-        	if input.KeyCode == Enum.KeyCode.W then
-        		VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.LeftShift, false, nil)
-        	end
-        end)
+    local sprint = char.State.Sprinting.Server.Value
+    local slide = char.State.Sliding.Server.Value
+    local aiming = char.State.Aiming.Server.Value
+    
+    if not sprint and not slide and not aiming then
+        VirtualInputManager:SendKeyEvent(true, Enum.KeyCode.LeftShift, false, nil)
     end
+    
+    
+    UserInputService.InputEnded:Connect(function(input, gp)
+        if input.KeyCode == Enum.KeyCode.W then
+            VirtualInputManager:SendKeyEvent(false, Enum.KeyCode.LeftShift, false, nil)
+        end
+    end)
 end
 local function AimAt(Hitbox, Sensitivity)
     if not Hitbox then return end
