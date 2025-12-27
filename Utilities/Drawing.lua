@@ -715,23 +715,24 @@ function DrawingLibrary.Update(ESP, Target)
         Line.Main.Visible = ESP.Drawing.Box.Visible
         Line.Outline.Visible = ESP.Drawing.Box.OutlineVisible
     end
-
-    ESP.Drawing.HealthBar.Main.Visible = ESP.Drawing.Box.Visible and GetFlag(Flags, Flag, "/Box/HealthBar") and not BoxTooSmall or false
-    ESP.Drawing.HealthBar.Outline.Visible = ESP.Drawing.HealthBar.Main.Visible and GetFlag(Flags, Flag, "/Box/Outline") or false
-
-    ESP.Drawing.Arrow.Main.Visible = ArrowVisible and GetFlag(Flags, Flag, "/Arrow/Enabled") or false
-    ESP.Drawing.Arrow.Outline.Visible = GetFlag(Flags, Flag, "/Arrow/Outline") and ESP.Drawing.Arrow.Main.Visible or false
-
-    ESP.Drawing.HeadDot.Main.Visible = Visible and GetFlag(Flags, Flag, "/HeadDot/Enabled") or false
-    ESP.Drawing.HeadDot.Outline.Visible = GetFlag(Flags, Flag, "/HeadDot/Outline") and ESP.Drawing.HeadDot.Main.Visible or false
-
-    ESP.Drawing.Tracer.Main.Visible = Visible and GetFlag(Flags, Flag, "/Tracer/Enabled") or false
-    ESP.Drawing.Tracer.Outline.Visible = GetFlag(Flags, Flag, "/Tracer/Outline") and ESP.Drawing.Tracer.Main.Visible or false
-
-    ESP.Drawing.Textboxes.Name.Visible = Visible and GetFlag(Flags, Flag, "/Name/Enabled") or false
-    ESP.Drawing.Textboxes.Health.Visible = Visible and GetFlag(Flags, Flag, "/Health/Enabled") or false
-    ESP.Drawing.Textboxes.Distance.Visible = Visible and GetFlag(Flags, Flag, "/Distance/Enabled") or false
-    ESP.Drawing.Textboxes.Weapon.Visible = Visible and GetFlag(Flags, Flag, "/Weapon/Enabled") or false
+    pcall(function() 
+        ESP.Drawing.HealthBar.Main.Visible = ESP.Drawing.Box.Visible and GetFlag(Flags, Flag, "/Box/HealthBar") and not BoxTooSmall or false
+        ESP.Drawing.HealthBar.Outline.Visible = ESP.Drawing.HealthBar.Main.Visible and GetFlag(Flags, Flag, "/Box/Outline") or false
+    
+        ESP.Drawing.Arrow.Main.Visible = ArrowVisible and GetFlag(Flags, Flag, "/Arrow/Enabled") or false
+        ESP.Drawing.Arrow.Outline.Visible = GetFlag(Flags, Flag, "/Arrow/Outline") and ESP.Drawing.Arrow.Main.Visible or false
+    
+        ESP.Drawing.HeadDot.Main.Visible = Visible and GetFlag(Flags, Flag, "/HeadDot/Enabled") or false
+        ESP.Drawing.HeadDot.Outline.Visible = GetFlag(Flags, Flag, "/HeadDot/Outline") and ESP.Drawing.HeadDot.Main.Visible or false
+    
+        ESP.Drawing.Tracer.Main.Visible = Visible and GetFlag(Flags, Flag, "/Tracer/Enabled") or false
+        ESP.Drawing.Tracer.Outline.Visible = GetFlag(Flags, Flag, "/Tracer/Outline") and ESP.Drawing.Tracer.Main.Visible or false
+    
+        ESP.Drawing.Textboxes.Name.Visible = Visible and GetFlag(Flags, Flag, "/Name/Enabled") or false
+        ESP.Drawing.Textboxes.Health.Visible = Visible and GetFlag(Flags, Flag, "/Health/Enabled") or false
+        ESP.Drawing.Textboxes.Distance.Visible = Visible and GetFlag(Flags, Flag, "/Distance/Enabled") or false
+        ESP.Drawing.Textboxes.Weapon.Visible = Visible and GetFlag(Flags, Flag, "/Weapon/Enabled") or false
+    end)
 end
 
 --[[function DrawingLibrary.InitRender(Self, Target, Mode, Flag, Flags)
@@ -1381,39 +1382,40 @@ end
 Workspace:GetPropertyChangedSignal("CurrentCamera"):Connect(function()
     Camera = Workspace.CurrentCamera
 end)
-
-DrawingLibrary.Connection = RunService.RenderStepped:Connect(function()
-    debug.profilebegin("PARVUS_DRAWING")
-    for Target, ESP in pairs(DrawingLibrary.ESP) do
-        DrawingLibrary.Update(ESP, Target)
-    end
-    for Object, ESP in pairs(DrawingLibrary.ObjectESP) do
-        --DrawingLibrary.UpdateObject(ESP, Object)
-        if not GetFlag(ESP.Flags, ESP.GlobalFlag, "/Enabled")
-        or not GetFlag(ESP.Flags, ESP.Flag, "/Enabled") then
-            ESP.Name.Visible = false
-            continue
+pcall(function() 
+    DrawingLibrary.Connection = RunService.RenderStepped:Connect(function()
+        debug.profilebegin("PARVUS_DRAWING")
+        for Target, ESP in pairs(DrawingLibrary.ESP) do
+            DrawingLibrary.Update(ESP, Target)
         end
-
-        ESP.Target.Position = ESP.IsBasePart and ESP.Target.RootPart.Position or ESP.Target.Position
-        ESP.Target.ScreenPosition, ESP.Target.OnScreen = WorldToScreen(ESP.Target.Position)
-
-        ESP.Target.Distance = GetDistance(ESP.Target.Position)
-        ESP.Target.InTheRange = IsWithinReach(GetFlag(ESP.Flags, ESP.GlobalFlag, "/DistanceCheck"),
-        GetFlag(ESP.Flags, ESP.GlobalFlag, "/Distance"), ESP.Target.Distance)
-
-        ESP.Name.Visible = (ESP.Target.OnScreen and ESP.Target.InTheRange) or false
-
-        if ESP.Name.Visible then
-            local Color = GetFlag(ESP.Flags, ESP.Flag, "/Color")
-            ESP.Name.Transparency = 1 - Color[4]
-            ESP.Name.Color = Color[6]
-
-            ESP.Name.Position = ESP.Target.ScreenPosition
-            ESP.Name.Text = string.format("%s\n%i studs", ESP.Target.Name, ESP.Target.Distance)
+        for Object, ESP in pairs(DrawingLibrary.ObjectESP) do
+            --DrawingLibrary.UpdateObject(ESP, Object)
+            if not GetFlag(ESP.Flags, ESP.GlobalFlag, "/Enabled")
+            or not GetFlag(ESP.Flags, ESP.Flag, "/Enabled") then
+                ESP.Name.Visible = false
+                continue
+            end
+    
+            ESP.Target.Position = ESP.IsBasePart and ESP.Target.RootPart.Position or ESP.Target.Position
+            ESP.Target.ScreenPosition, ESP.Target.OnScreen = WorldToScreen(ESP.Target.Position)
+    
+            ESP.Target.Distance = GetDistance(ESP.Target.Position)
+            ESP.Target.InTheRange = IsWithinReach(GetFlag(ESP.Flags, ESP.GlobalFlag, "/DistanceCheck"),
+            GetFlag(ESP.Flags, ESP.GlobalFlag, "/Distance"), ESP.Target.Distance)
+    
+            ESP.Name.Visible = (ESP.Target.OnScreen and ESP.Target.InTheRange) or false
+    
+            if ESP.Name.Visible then
+                local Color = GetFlag(ESP.Flags, ESP.Flag, "/Color")
+                ESP.Name.Transparency = 1 - Color[4]
+                ESP.Name.Color = Color[6]
+    
+                ESP.Name.Position = ESP.Target.ScreenPosition
+                ESP.Name.Text = string.format("%s\n%i studs", ESP.Target.Name, ESP.Target.Distance)
+            end
         end
-    end
-    debug.profileend()
+        debug.profileend()
+    end)
 end)
 
 --[[DrawingLibrary.Connection = RunService.RenderStepped:Connect(function()
