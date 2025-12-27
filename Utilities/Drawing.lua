@@ -1382,8 +1382,9 @@ end
 Workspace:GetPropertyChangedSignal("CurrentCamera"):Connect(function()
     Camera = Workspace.CurrentCamera
 end)
-pcall(function() 
-    DrawingLibrary.Connection = RunService.RenderStepped:Connect(function()
+
+DrawingLibrary.Connection = RunService.RenderStepped:Connect(function()
+    pcall(function() 
         debug.profilebegin("PARVUS_DRAWING")
         for Target, ESP in pairs(DrawingLibrary.ESP) do
             DrawingLibrary.Update(ESP, Target)
